@@ -49,15 +49,19 @@ public class Console implements Serializable {
         this.id = id;
     }
 
+    @Override
     public boolean equals(Object o) {
+        if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
         Console console = (Console) o;
-        return geracao == console.geracao && id == console.id && java.util.Objects.equals(marca, console.marca) && java.util.Objects.equals(modelo, console.modelo);
+        return geracao == console.geracao && id == console.id
+                && Objects.equals(marca, console.marca)
+                && Objects.equals(modelo, console.modelo);
     }
 
+    @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), marca, modelo, geracao, id);
+        return Objects.hash(marca, modelo, geracao, id);
     }
 
     @Override

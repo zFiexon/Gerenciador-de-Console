@@ -1,4 +1,5 @@
 package Gerenciador;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -16,20 +17,20 @@ public class GerenciadorDeConsoles implements SistemaConsole {
     }
 
     @Override
-    public boolean cadastrarConsole(String marca, String modelo, int geracao, int id) {
-        if (this.consoles.containsKey(id)) {
-            return false;
+    public void cadastrarConsole(String marca, String modelo, int geracao, int id) {
+        String chave = String.valueOf(id);
+        if (this.consoles.containsKey(chave)) {
+            return;
         }
         Console console = new Console(marca, modelo, geracao, id);
-        this.consoles.put(String.valueOf(id), console);
-        return true;
+        this.consoles.put(chave, console);
     }
 
     @Override
-    public Collection<Console> pesquisarConsole(String modelo, int geracao) {
+    public Collection<Console> pesquisarConsole(String modelo, int id) {
         List<Console> resultados = new ArrayList<>();
         for (Console c : this.consoles.values()) {
-            if (c.getModelo().equalsIgnoreCase(modelo) && c.getGeracao() == geracao) {
+            if (c.getModelo().equalsIgnoreCase(modelo) && c.getId() == id) {
                 resultados.add(c);
             }
         }
@@ -37,11 +38,13 @@ public class GerenciadorDeConsoles implements SistemaConsole {
     }
 
     @Override
-    public void removerConsole(String modelo, int geracao) throws ConsoleInexistenteException {
-        if (this.consoles.containsKey(modelo)){
-            this.consoles.remove(modelo);
+    public void removerConsole(String modelo, int id) throws ConsoleInexistenteException {
+        String chave = String.valueOf(id);
+        Console console = this.consoles.get(chave);
+        if (console != null && console.getModelo().equalsIgnoreCase(modelo)) {
+            this.consoles.remove(chave);
         } else {
-            throw new ConsoleInexistenteException("Console não encontrado: " + modelo + ", geração: " + geracao);
+            throw new ConsoleInexistenteException("Console não encontrado: " + modelo + ", id: " + id);
         }
     }
 
